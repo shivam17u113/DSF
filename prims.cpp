@@ -1,206 +1,208 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-int min_distance(int *dis, int *vis, int n_v)
+int minimum(int *v,int *d, int n)
 {
-	int min_value=9999;
-	int v_index;
 	
-	for(int i=0;i<n_v;i++)
-	{
-		if(vis[i]==0 && dis[i]<min_value)
-		 {
-		 	min_value=dis[i];
-		 	v_index=i;
-		 	
-		 }
-		
-		
-	}
-	return v_index;
+	int index;
+	int min=9999;
 	
+	for(int i=0;i<n;i++)
+	   {
+	   	if(d[i]<min && v[i]==0)
+	   	{
+	   		min= d[i];
+	   		index=i;
+	   		
+		   }
+	   	
+	   	
+	   }
+	   return index;
 	
 }
 
 
 
-int main() 
+int main()
 {
-	int n_v,n_e,v1,v2,value;
-	cout<<"\n enter the no of vertices  ";
-	cin>>n_v;
-	cout<<"\n enter the no of edges ";
-	cin>>n_e;
+	int n_v,n_e,u,v,value;
+	
+	cout<<"enter the no of vertices and no of edges";
+	cin>>n_v>>n_e;
 	
 	int g[n_v][n_v];
-	int distance[n_v],visited[n_v],parent[n_v];
+	int parent[n_v];
+	int visited[n_v];
+	int distance[n_v];
 	
 	for(int i=0;i<n_v;i++)
 	{
 		distance[i]=9999;
-		visited[i]=0;
 		parent[i]=0;
+		visited[i]=0;
+		
 	}
+	
+for(int i=0;i<n_v;i++)
+	for(int j=0;j<n_v;j++)
+	      g[i][j]=0;
 	
 	distance[0]=0;
 	
 	
+	
+	
+	
+	
+	
+	for(int i=0;i<n_e;i++)
+	 {
+	 	cout<<"enter the u,v,value";
+	 	cin>>u>>v>>value;
+	 	
+	g[u][v]=g[v][u]=value;
+	 }
+	
+cout<<"the g matrix is";
+   for(int i=0;i<n_v;i++)
+   {
+   	cout<<endl;
+   	for(int j=0;j<n_v;j++)
+	{
+	cout<<g[i][j]<<"\t";	
+	}
+   }
+	
+	  	
+	
+	
+	
+for(int j=0;j<n_v-1;j++)
+{
+	int v= minimum(visited, distance,n_v);
+	      visited[v]=1;
+	      
+	      cout<<"the "<<j<<"loop run"<<endl;
+	      cout<<"the minimum value is"<<v<<endl;
+	      
+	
 	for(int i=0;i<n_v;i++)
 	{
-		for(int j=0;j<n_v;j++)
-	  {
-	  	g[i][j]=0;
-	  }
-	     
+		if(g[v][i]!=0 && (distance[i]>g[v][i]) && visited[i]==0)
+		{
+			distance[i]=g[v][i];
+			parent[i]=v;
+			
+		}
+		
+		
 	}
-	      
-	         
 	
-		for(int j=0;j<n_e;j++)
-		{
-			cout<<"enter the starting vertex, ending vertex and the value ";
-			cin>>v1;
-			cin>>v2;
-			cin>>value;
-			
-			g[v1][v2]=g[v2][v1]=value;
-		}
-		
-		for(int i=0;i<n_v-1;i++)
-		{
-			int min= min_distance(distance, visited,n_v);
-		
-			visited[min]=1;
-			
-			for(int i=0;i<n_v;i++)
-			{
-				if(distance[i]>g[min][i]  && g[min][i]!=0&& visited[i]==0)
-				{
-						distance[i]=g[min][i];
-					    parent[i]=min;
-				}
-			}
-		}
-		
-		int p;
-		cout<<"the path summary will be";
-		for (int i=0;i<n_v;i++)
-cout<<"0 -> "<<i<<" "<<" = "<<distance[i]<<endl;
-
-
-cout<<"the parent matrix is";
-for(int i=0;i<n_v;i++)
-   cout<<parent[i]<<endl;
-		
-		
-	cout<<" enter the distination to which you wnat to go "<<endl;
- cin>>p;
-
- cout<<" Required path is  "<<p;
-  while(p!=0)
-{
-   p=parent[p];
-  cout << " <--" << p ;
-
+/*	cout<<"the distance matrix is"<<endl;
+	for(int i=0;i<n_v;i++)
+   cout<<"0 ->"<<i<<" "<<"= "<<distance[i]<<endl;
+	
+	cout<<"the parent matrix is "<<endl;
+	for(int i=0;i<n_v;i++)
+   cout<<i<<" "<<"= "<<parent[i]<<endl;*/
+	
 }
+cout<<"***************************************0";
+cout<<"\n\n\n\n";
+cout<<"the path summary is";
+for(int i=0;i<n_v;i++)
+   {
+   	cout<<" vertex1  "<<" vertex2 "<< " distance ";
+   	cout<<i<<" --->"<<parent[i]<<" == "<<distance[i];
+   	cout<<endl;
+   }
+
+
+int p,sum;
+cout<<"enter -1 to close";
+do
+{
+	sum=0;
+	cout<<"enter the destination";
+cin>>p;
+
+cout<<"required path"<<p;
+sum=sum+distance[p];
+	while(p!=0)
+{
+	p=parent[p];
+	sum+=distance[p];
+	cout<<"<--"<<p;
 	
+}
+cout<<"total path length "<<sum<<endl;	
 	
-	
+}while(p!=-1);
+
 	
 	return 0;
 }
-
-
-
-
-
-/* enter the number of vertices 7
- enter the number edges 12
-enter the vertices and the vaule of their edge
-0
+/*enter the no of vertices and no of edges5
+6
+enter the u,v,value0
 1
-3
-enter the vertices and the vaule of their edge
-0
-2
-5
-enter the vertices and the vaule of their edge
-0
-3
-6
-enter the vertices and the vaule of their edge
-1
-3
-2
-enter the vertices and the vaule of their edge
-2
-3
-2
-enter the vertices and the vaule of their edge
+10
+enter the u,v,value0
 3
 5
-9
-enter the vertices and the vaule of their edge
+enter the u,v,value1
 2
-5
 3
-enter the vertices and the vaule of their edge
-2
+enter the u,v,value2
+3
+31
+enter the u,v,value1
 4
-6
-enter the vertices and the vaule of their edge
-2
-6
-7
-enter the vertices and the vaule of their edge
+20
+enter the u,v,value2
 4
-5
-5
-enter the vertices and the vaule of their edge
-4
-6
-2
-enter the vertices and the vaule of their edge
-5
-6
-1
-
-0 -> 0  = 0
-0 -> 1  = 3
-0 -> 2  = 5
-0 -> 3  = 5
-0 -> 4  = 11
-0 -> 5  = 8
-0 -> 6  = 9
+22
+the g matrix is
+0       10      0       5       0
+10      0       3       0       20
+0       3       0       31      22
+5       0       31      0       0
+0       20      22      0       0       the 0loop run
+the minimum value is0
+the 1loop run
+the minimum value is3
+the 2loop run
+the minimum value is1
+the 3loop run
+the minimum value is2
 
 
-0 ->1 = 3
-0 ->2 = 2
-0 ->3 = 2
-0 ->4 = 2
-0 ->5 = 3
-0 ->6 = 1
 
+the path summary is
+ vertex1   vertex2  distance
+ 0 --->0 == 0
+ vertex1   vertex2  distance
+  1 --->0 == 10
+ vertex1   vertex2  distance
+  2 --->1 == 3
+ vertex1   vertex2  distance
+  3 --->0 == 5
+ vertex1   vertex2  distance
+  4 --->1 == 20
+  
+enter -1 to closeenter the destination4
+required path4<--1<--0
+total path length 30
 
-0.stop
- 1.countinue1
- enter the starting vertes to print the shortest path
-1
- Required path is  1 <--0
- total distance of required path is  0
- enter the starting vertes to print the shortest path
-5
- Required path is  5 <--2 <--0
- total distance of required path is  0
- enter the starting vertes to print the shortest path
-6
- Required path is  6 <--5 <--2 <--0
- total distance of required path is  0
- enter the starting vertes to print the shortest path
-4
- Required path is  4 <--2 <--0
- total distance of required path is  0
- enter the starting vertes to print the shortest path
+enter the destination2
+required path2<--1<--0
+total path length 13
+
+enter the destination3
+required path3<--0
+total path length 5
+enter the destination
 
 */
 
